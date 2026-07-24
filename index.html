@@ -34,9 +34,9 @@
     }
 
     .app {
-      width: min(100%, 560px);
+      width:min(calc(100% - 24px),560px);
       margin: 0 auto;
-      padding: 18px 16px 40px;
+      padding:18px 0 40px;
     }
 
     .hero {
@@ -284,7 +284,8 @@
     }
   
     .hero {
-      padding: 4px 0 18px;
+      padding:0 0 12px;
+      text-align:center;
     }
 
     .hero-badge,
@@ -294,10 +295,11 @@
     }
 
     .hero-logo {
-      display: block;
-      width:min(100%,500px);
-      margin: 0 auto;
-      object-fit: contain;
+       display:block;
+       width:100%;
+       max-width:none;
+       margin:0 auto;
+       object-fit:contain;
     }
 
     .card,
