@@ -419,6 +419,69 @@
     min-width:0 !important;
   }
 }
+
+
+/* Definitive iPhone/Safari date containment */
+.grid-2 .field {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
+}
+
+#stepDate {
+  display: block !important;
+  box-sizing: border-box !important;
+  inline-size: 100% !important;
+  min-inline-size: 0 !important;
+  max-inline-size: 100% !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  -webkit-min-logical-width: 0 !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+/* Keep the native date picker usable on WebKit */
+#stepDate::-webkit-date-and-time-value {
+  min-width: 0 !important;
+  width: 100% !important;
+  text-align: left;
+}
+
+#stepDate::-webkit-calendar-picker-indicator {
+  flex: 0 0 auto;
+  margin-left: 6px;
+}
+
+/* Larger logo */
+.hero {
+  overflow: visible;
+}
+
+.hero-logo {
+  width: calc(100% + 72px) !important;
+  max-width: none !important;
+  margin-left: -36px !important;
+  margin-right: -36px !important;
+}
+
+@media (max-width: 768px) {
+  .hero-logo {
+    width: calc(100% + 56px) !important;
+    max-width: none !important;
+    margin-left: -28px !important;
+    margin-right: -28px !important;
+  }
+
+  #stepDate {
+    inline-size: 100% !important;
+    min-inline-size: 0 !important;
+    max-inline-size: 100% !important;
+  }
+}
 </style>
 </head>
 <body>
