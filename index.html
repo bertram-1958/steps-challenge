@@ -11,12 +11,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
 <style>
     :root {
-      --green: #68d05f;
-      --green-dark: #174d2a;
-      --cream: #fffaf0;
+      --green: #000000;
+      --green-dark: #000000;
+      --cream: #ffffff;
       --yellow: #ffd85c;
-      --text: #173c25;
-      --muted: #6f7f73;
+      --text: #111111;
+      --muted: #777777;
       --danger: #c63838;
       --shadow: 0 12px 30px rgba(20, 70, 40, .12);
     }
@@ -117,8 +117,8 @@
 
     input:focus,
     select:focus {
-      border-color: var(--green);
-      box-shadow: 0 0 0 4px rgba(104, 208, 95, .17);
+      border-color: #000;
+      box-shadow: 0 0 0 4px rgba(0,0,0,.12);
     }
 
     input[type="file"] {
@@ -176,8 +176,8 @@
     }
 
     .message.success {
-      background: #e6f8e2;
-      color: #145b27;
+      background: #f2f2f2;
+      color: #111;
     }
 
     .message.error {
@@ -221,7 +221,7 @@
     }
 
     .big-number {
-      color: #146b2f;
+      color:#000;
       font-size: 42px;
       line-height: 1;
       font-weight: 800;
@@ -262,7 +262,7 @@
     }
 
     .steps {
-      color: #12632b;
+      color:#000;
       font-weight: 800;
       white-space: nowrap;
     }
@@ -320,7 +320,7 @@ body{background:linear-gradient(180deg,#c80000,#a80000)!important;}
 <div class="grid-2">
 <div class="field">
 <label for="stepDate">วันที่</label>
-<input id="stepDate" readonly="readonly" type="text"/>
+<input id="stepDate" type="date">
 </div>
 <div class="field">
 <label for="steps">จำนวนก้าว</label>
@@ -428,9 +428,7 @@ body{background:linear-gradient(180deg,#c80000,#a80000)!important;}
           .map(item => `<option value="${escapeHtml(item)}">${escapeHtml(item)}</option>`)
           .join("");
 
-      const d=new Date();
-const m=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-stepDate.value=`${d.getDate()} ${m[d.getMonth()]} BE ${d.getFullYear()+543}`;
+      stepDate.value = new Date().toISOString().slice(0, 10);
     }
 
     evidence.addEventListener("change", handleImageSelection);
@@ -491,7 +489,7 @@ stepDate.value=`${d.getDate()} ${m[d.getMonth()]} BE ${d.getFullYear()+543}`;
       const name = employeeName.value.trim();
       const dept = department.value;
       const teamName = team.value;
-      const date = new Date().toISOString().slice(0,10);
+      const date = stepDate.value;
       const stepCount = Number(steps.value);
       const originalFile = evidence.files[0];
 
