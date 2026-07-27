@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+
+<html lang="th">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>BERTRAM STEPS CHALLENGE</title>
+<meta content="#c80000" name="theme-color"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<style>
+    :root {
+      --green: #000000;
+      --green-dark: #000000;
+      --cream: #ffffff;
+      --yellow: #ffd85c;
+      --text: #111111;
+      --muted: #777777;
+      --danger: #c63838;
+      --shadow: 0 12px 30px rgba(0, 0, 0, .22);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      background: #000000;
+    }
+
+    body {
+      position: relative;
+      min-height: 100vh;
+      font-family: "Prompt", sans-serif;
+      color: var(--text);
+      background: transparent;
+      isolation: isolate;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100svh;
+      background-image: url("images/background.png");
+      background-repeat: no-repeat;
+      background-position: center top;
+      background-size: 100% auto;
+      background-color: #000000;
+      z-index: -1;
+      pointer-events: none;
+      transform: translateZ(0);
+      backface-visibility: hidden;
+    }
+
+    .app {
+      width:min(calc(100% - 24px),560px);
+      margin: 0 auto;
+      padding:6px 0 40px;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 22px 16px 18px;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      padding: 6px 14px;
+      border: 2px solid var(--green-dark);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .82);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .hero h1 {
+      margin: 12px 0 6px;
+      font-size: clamp(31px, 8vw, 48px);
+      line-height: 1;
+      font-weight: 800;
+    }
+
+    .hero p {
+      margin: 0;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .card,
+    .stat-card {
+      background: rgba(255, 255, 255, .94);
+      border: 3px solid var(--green-dark);
+      border-radius: 26px;
+      box-shadow: 0 7px 0 var(--green-dark), var(--shadow);
+    }
+
+    .card {
+      margin-bottom: 18px;
+      padding: 18px;
+    }
+
+    .card h2,
+    .stat-card h3 {
+      margin: 0 0 14px;
+    }
+
+    .field {
+      margin-bottom: 13px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    input,
+    select,
+    button {
+      font-family: inherit;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 12px 14px;
+      border: 2px solid #d9e4d8;
+      border-radius: 16px;
+      background: #fff;
+      font-size: 15px;
+      outline: none;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: var(--green);
+      box-shadow: 0 0 0 4px rgba(0, 0, 0, .12);
+    }
+
+    input[type="file"] {
+      padding: 10px;
+      background: var(--cream);
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .submit-btn,
+    .refresh-btn {
+      width: 100%;
+      cursor: pointer;
+      font-weight: 800;
+    }
+
+    .submit-btn {
+      padding: 14px;
+      border: 0;
+      border-radius: 18px;
+      background: var(--yellow);
+      color: #102e18;
+      font-size: 18px;
+      box-shadow: 0 6px 0 #bb8f10;
+    }
+
+    .submit-btn:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+    }
+
+    .refresh-btn {
+      padding: 10px;
+      border: 2px solid var(--green-dark);
+      border-radius: 16px;
+      background: #fff;
+      color: var(--green-dark);
+    }
+
+    .message {
+      display: none;
+      margin-top: 12px;
+      padding: 10px 12px;
+      border-radius: 13px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .message.show {
+      display: block;
+    }
+
+    .message.success {
+      background: #f2f2f2;
+      color: #111111;
+    }
+
+    .message.error {
+      background: #ffe6e6;
+      color: var(--danger);
+    }
+
+    .preview-wrap {
+      display: none;
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    .preview-wrap.show {
+      display: block;
+    }
+
+    #imagePreview {
+      max-width: 100%;
+      max-height: 260px;
+      object-fit: contain;
+      border: 2px solid #d9e4d8;
+      border-radius: 16px;
+      background: #f7f7f7;
+    }
+
+    .file-info {
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .dashboard {
+      display: grid;
+      gap: 16px;
+    }
+
+    .stat-card {
+      padding: 17px;
+    }
+
+    .big-number {
+      color: #000000;
+      font-size: 42px;
+      line-height: 1;
+      font-weight: 800;
+    }
+
+    .subtext {
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .leaderboard-row,
+    .team-row {
+      display: grid;
+      grid-template-columns: 42px 1fr auto;
+      gap: 8px;
+      align-items: center;
+      margin-top: 8px;
+      padding: 10px;
+      border: 1px solid #eadfbd;
+      border-radius: 14px;
+      background: var(--cream);
+    }
+
+    .rank {
+      text-align: center;
+      font-weight: 800;
+    }
+
+    .name {
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .dept {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .steps {
+      color: #000000;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .loading {
+      padding: 15px 0;
+      color: var(--muted);
+      text-align: center;
+      font-weight: 600;
+    }
+
+    @media (max-width: 420px) {
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+
+      .leaderboard-row,
+      .team-row {
+        grid-template-columns: 34px 1fr auto;
+      }
+    }
+  
+    .hero {
+      padding:0;
+      margin-bottom:-30px;
+      text-align:center;
+    }
+
+    .hero-badge,
+    .hero h1,
+    .hero p {
+      display: none !important;
+    }
+
+    .hero-logo {
+       display:block;
+       width:100%;
+       max-width:none;
+       margin:0 auto;
+       object-fit:contain;
+    }
+
+    .card,
+    .stat-card {
+      border-color: #000000;
+      box-shadow: 0 7px 0 #000000, var(--shadow);
+    }
+
+    .submit-btn {
+      background: #ffd54a;
+      color: #111111;
+      box-shadow: 0 6px 0 #a77a00;
+    }
+
+    .refresh-btn {
+      border-color: #000000;
+      color: #000000;
+    }
+
+    .leaderboard-row,
+    .team-row {
+      background: #ffffff;
+      border-color: #dedede;
+    }
+
+    @media (max-width: 420px) {
+      .grid-2 {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 8px;
+      }
+
+      #stepDate,
+      #steps {
+        min-width: 0;
+        width: 100%;
+        padding: 12px 10px;
+        font-size: 14px;
+      }
+
+      .app {
+        padding-left: 12px;
+        padding-right: 12px;
+      }
+    }
+
+    /* Mobile fix: stack Date and Steps vertically to prevent Safari/iPhone overlap */
+    @media (max-width: 768px) {
+      .grid-2 {
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
+      }
+
+      .grid-2 > *,
+      .grid-2 .field {
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+      }
+
+      input,
+      select,
+      textarea {
+        box-sizing: border-box !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+      }
+
+      input[type="date"],
+      input[type="number"] {
+        display: block !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+      }
+
+      .app {
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+      }
+    }
+
+
+
+/* Final iPhone date fix */
+.grid-2{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+}
+
+.grid-2 .field{
+  min-width:0;
+}
+
+#stepDate{
+  display:block;
+  width:100% !important;
+  max-width:100% !important;
+  min-width:0 !important;
+  box-sizing:border-box !important;
+  -webkit-appearance:auto;
+  appearance:auto;
+}
+
+@media (max-width:768px){
+  .hero-logo{
+    width:min(100%,520px);
+  }
+
+  .grid-2{
+    grid-template-columns:1fr !important;
+    gap:14px !important;
+  }
+
+  #stepDate,
+  #steps{
+    width:100% !important;
+    max-width:100% !important;
+    min-width:0 !important;
+  }
+}
+
+
+/* Definitive iPhone/Safari date containment */
+.grid-2 .field {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
+}
+
+#stepDate {
+  display: block !important;
+  box-sizing: border-box !important;
+  inline-size: 100% !important;
+  min-inline-size: 0 !important;
+  max-inline-size: 100% !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  -webkit-min-logical-width: 0 !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+/* Keep the native date picker usable on WebKit */
+#stepDate::-webkit-date-and-time-value {
+  min-width: 0 !important;
+  width: 100% !important;
+  text-align: left;
+}
+
+#stepDate::-webkit-calendar-picker-indicator {
+  flex: 0 0 auto;
+  margin-left: 6px;
+}
+
+/* Larger logo */
+.hero {
+  overflow: visible;
+}
+
+.hero-logo {
+  width: calc(100% + 72px) !important;
+  max-width: none !important;
+  margin-left: -36px !important;
+  margin-right: -36px !important;
+}
+
+@media (max-width: 768px) {
+  .hero-logo {
+    width: calc(100% + 56px) !important;
+    max-width: none !important;
+    margin-left: -28px !important;
+    margin-right: -28px !important;
+  }
+
+  #stepDate {
+    inline-size: 100% !important;
+    min-inline-size: 0 !important;
+    max-inline-size: 100% !important;
+  }
+}
+
+
+    @supports not (height: 100svh) {
+      body::before {
+        height: 100vh;
+      }
+    }
+
+    .app {
+      position: relative;
+      z-index: 1;
+    }
+</style>
+</head>
+<body>
+<main class="app">
+<header class="hero"><img alt="BERTRAM STEPS CHALLENGE" class="hero-logo" src="images/logo.png"/></header>
+<section class="card">
+<h2>ส่งจำนวนก้าววันนี้</h2>
+<div class="field">
+<label for="employeeName">ชื่อพนักงาน</label>
+<input autocomplete="off" id="employeeName" list="employeeList" placeholder="พิมพ์ชื่อแล้วเลือกจากรายการ"/>
+<datalist id="employeeList"></datalist>
+</div>
+<div class="grid-2">
+<div class="field">
+<label for="department">แผนก</label>
+<select id="department">
+<option value="">เลือกแผนก</option>
+</select>
+</div>
+<div class="field">
+<label for="team">ทีม</label>
+<select id="team">
+<option value="">เลือกทีม</option>
+</select>
+</div>
+</div>
+<div class="grid-2">
+<div class="field">
+<label for="stepDate">วันที่</label>
+<input id="stepDate" type="date"/>
+</div>
+<div class="field">
+<label for="steps">จำนวนก้าว</label>
+<input id="steps" inputmode="numeric" max="100000" min="1" placeholder="เช่น 12500" type="number"/>
+</div>
+</div>
+<div class="field">
+<label for="evidence">แนบภาพหลักฐาน</label>
+<input accept="image/*" id="evidence" type="file"/>
+<div class="preview-wrap" id="previewWrap">
+<img alt="ตัวอย่างภาพหลักฐาน" id="imagePreview"/>
+<div class="file-info" id="fileInfo"></div>
+</div>
+</div>
+<button class="submit-btn" id="submitBtn" type="button">SUBMIT</button>
+<div class="message" id="formMessage"></div>
+</section>
+<section class="dashboard">
+<div class="stat-card">
+<h3>👣 จำนวนก้าวของฉัน</h3>
+<div class="big-number" id="mySteps">0</div>
+<div class="subtext" id="myStepsLabel">กรอกชื่อเพื่อดูยอดสะสมของคุณ</div>
+</div>
+<div class="stat-card">
+<h3>🏆 Top 10</h3>
+<div class="loading" id="leaderboardList">กำลังโหลดข้อมูล...</div>
+</div>
+<div class="stat-card">
+<h3>👥 จำนวนก้าวรวมของทุกทีม</h3>
+<div class="loading" id="teamList">กำลังโหลดข้อมูล...</div>
+</div>
+<button class="refresh-btn" id="refreshBtn">รีเฟรช Dashboard</button>
+</section>
+</main>
+<script>
+    // ใส่ URL Web App จาก Google Apps Script ตรงนี้
+    const API_URL = "https://script.google.com/macros/s/AKfycbxQWXph_Oa0LT3UtVOU-zfX_H8fcp-RSJvt4R08mCvkzpQb43IlVeDRI11s7A9c6Rth/exec";
+
+    // ปรับค่าบีบอัดรูปตรงนี้
+    const IMAGE_MAX_WIDTH = 720;
+    const IMAGE_QUALITY = 0.50;
+    const MAX_ORIGINAL_FILE_SIZE = 10 * 1024 * 1024;
+
+    // ใส่รายชื่อพนักงานทั้งหมดตรงนี้
+    const EMPLOYEES = [
+      "Sunisa Pachvijit",
+      "Pratarn Thongtaweechaiyakaij",
+      "Chatsuda Khamkhun"
+    ];
+
+    const DEPARTMENTS = [
+      "Accounting & Finance",
+      "Corporate Communication",
+      "Domestic Sales",
+      "E-Commerce",
+      "Executive",
+      "Human Resource & Administration",
+      "Information Technology",
+      "Internal Audit",
+      "International Business Development",
+      "International Marketing",
+      "Marketing",
+      "Procurement",
+      "Product Development",
+      "Regulatory Affairs",
+      "Research & Development",
+      "Supply Chain"
+    ];
+
+    // แก้ชื่อทีมตรงนี้
+    const TEAMS = [
+      "Team Green",
+      "Team Blue",
+      "Team Yellow",
+      "Team Red"
+    ];
+
+    const employeeName = document.getElementById("employeeName");
+    const department = document.getElementById("department");
+    const team = document.getElementById("team");
+    const stepDate = document.getElementById("stepDate");
+    const steps = document.getElementById("steps");
+    const evidence = document.getElementById("evidence");
+    const submitBtn = document.getElementById("submitBtn");
+    const formMessage = document.getElementById("formMessage");
+
+    let compressedImageBlob = null;
+
+    function initOptions() {
+      const employeeList = document.getElementById("employeeList");
+
+      employeeList.innerHTML = EMPLOYEES
+        .map(name => `<option value="${escapeHtml(name)}"></option>`)
+        .join("");
+
+      department.innerHTML =
+        `<option value="">เลือกแผนก</option>` +
+        DEPARTMENTS
+          .map(item => `<option value="${escapeHtml(item)}">${escapeHtml(item)}</option>`)
+          .join("");
+
+      team.innerHTML =
+        `<option value="">เลือกทีม</option>` +
+        TEAMS
+          .map(item => `<option value="${escapeHtml(item)}">${escapeHtml(item)}</option>`)
+          .join("");
+
+      stepDate.value = new Date().toISOString().slice(0, 10);
+    }
+
+    evidence.addEventListener("change", handleImageSelection);
+    employeeName.addEventListener("change", loadDashboard);
+    document.getElementById("refreshBtn").addEventListener("click", loadDashboard);
+    submitBtn.addEventListener("click", submitSteps);
+
+    async function handleImageSelection() {
+      clearMessage();
+
+      const file = evidence.files[0];
+      const wrap = document.getElementById("previewWrap");
+      const preview = document.getElementById("imagePreview");
+      const fileInfo = document.getElementById("fileInfo");
+
+      compressedImageBlob = null;
+
+      if (!file) {
+        wrap.classList.remove("show");
+        preview.src = "";
+        fileInfo.textContent = "";
+        return;
+      }
+
+      if (!file.type.startsWith("image/")) {
+        evidence.value = "";
+        return showMessage("กรุณาเลือกไฟล์รูปภาพเท่านั้น", "error");
+      }
+
+      if (file.size > MAX_ORIGINAL_FILE_SIZE) {
+        evidence.value = "";
+        return showMessage("ไฟล์ต้นฉบับต้องมีขนาดไม่เกิน 10 MB", "error");
+      }
+
+      try {
+        compressedImageBlob = await compressImage(
+          file,
+          IMAGE_MAX_WIDTH,
+          IMAGE_QUALITY
+        );
+
+        preview.src = URL.createObjectURL(compressedImageBlob);
+        wrap.classList.add("show");
+
+        fileInfo.textContent =
+          `ไฟล์เดิม ${formatFileSize(file.size)} → หลังบีบ ${formatFileSize(compressedImageBlob.size)}`;
+      } catch (error) {
+        console.error(error);
+        evidence.value = "";
+        compressedImageBlob = null;
+        showMessage("ไม่สามารถประมวลผลรูปภาพนี้ได้ กรุณาเลือกรูปอื่น", "error");
+      }
+    }
+
+    async function submitSteps() {
+      clearMessage();
+
+      const name = employeeName.value.trim();
+      const dept = department.value;
+      const teamName = team.value;
+      const date = stepDate.value;
+      const stepCount = Number(steps.value);
+      const originalFile = evidence.files[0];
+
+      if (!EMPLOYEES.includes(name)) {
+        return showMessage("กรุณาเลือกชื่อจากรายการพนักงาน", "error");
+      }
+
+      if (!dept || !teamName || !date || !stepCount || stepCount <= 0) {
+        return showMessage("กรุณากรอกข้อมูลให้ครบทุกช่อง", "error");
+      }
+
+      if (!originalFile || !compressedImageBlob) {
+        return showMessage("กรุณาแนบภาพหลักฐาน", "error");
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = "กำลังส่ง...";
+
+      try {
+        const imageBase64 = await blobToBase64(compressedImageBlob);
+
+        const payload = {
+          action: "submit",
+          name,
+          department: dept,
+          team: teamName,
+          date,
+          steps: stepCount,
+          fileName: createCompressedFileName(originalFile.name),
+          mimeType: "image/jpeg",
+          imageBase64
+        };
+
+        await fetch(API_URL, {
+          method: "POST",
+          mode: "no-cors",
+          body: JSON.stringify(payload)
+        });
+
+        showMessage("บันทึกจำนวนก้าวเรียบร้อยแล้ว 👣", "success");
+
+        steps.value = "";
+        evidence.value = "";
+        compressedImageBlob = null;
+
+        document.getElementById("previewWrap").classList.remove("show");
+        document.getElementById("imagePreview").src = "";
+        document.getElementById("fileInfo").textContent = "";
+
+        setTimeout(loadDashboard, 1800);
+      } catch (error) {
+        console.error(error);
+        showMessage("ส่งข้อมูลไม่สำเร็จ กรุณาลองใหม่อีกครั้ง", "error");
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "SUBMIT";
+      }
+    }
+
+    async function loadDashboard() {
+      const name = employeeName.value.trim();
+      const params = new URLSearchParams({
+        action: "dashboard",
+        name,
+        t: Date.now().toString()
+      });
+
+      try {
+        const response = await fetch(`${API_URL}?${params.toString()}`);
+        const data = await response.json();
+
+        renderMySteps(data.mySteps || 0, name);
+        renderLeaderboard(data.top10 || []);
+        renderTeams(data.teams || []);
+      } catch (error) {
+        console.error(error);
+        document.getElementById("leaderboardList").innerHTML = "โหลดข้อมูลไม่สำเร็จ";
+        document.getElementById("teamList").innerHTML = "โหลดข้อมูลไม่สำเร็จ";
+      }
+    }
+
+    function compressImage(file, maxWidth, quality) {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        const objectUrl = URL.createObjectURL(file);
+
+        img.onload = () => {
+          URL.revokeObjectURL(objectUrl);
+
+          const scale = Math.min(1, maxWidth / img.width);
+          const canvas = document.createElement("canvas");
+
+          canvas.width = Math.max(1, Math.round(img.width * scale));
+          canvas.height = Math.max(1, Math.round(img.height * scale));
+
+          const ctx = canvas.getContext("2d");
+
+          ctx.fillStyle = "#ffffff";
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+          canvas.toBlob(
+            blob => {
+              if (!blob) {
+                reject(new Error("Image compression failed"));
+                return;
+              }
+
+              resolve(blob);
+            },
+            "image/jpeg",
+            quality
+          );
+        };
+
+        img.onerror = () => {
+          URL.revokeObjectURL(objectUrl);
+          reject(new Error("Cannot read image"));
+        };
+
+        img.src = objectUrl;
+      });
+    }
+
+    function blobToBase64(blob) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+
+        reader.onload = () => {
+          resolve(String(reader.result).split(",")[1]);
+        };
+
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+      });
+    }
+
+    function createCompressedFileName(originalName) {
+      const baseName = originalName.replace(/\.[^/.]+$/, "");
+      return `${baseName}-compressed.jpg`;
+    }
+
+    function renderMySteps(value, name) {
+      document.getElementById("mySteps").textContent =
+        Number(value).toLocaleString();
+
+      document.getElementById("myStepsLabel").textContent =
+        name
+          ? `ยอดสะสมของ ${name}`
+          : "กรอกชื่อเพื่อดูยอดสะสมของคุณ";
+    }
+
+    function renderLeaderboard(items) {
+      const el = document.getElementById("leaderboardList");
+
+      if (!items.length) {
+        el.innerHTML = `<div class="loading">ยังไม่มีข้อมูล</div>`;
+        return;
+      }
+
+      el.innerHTML = items.map((item, index) => `
+        <div class="leaderboard-row">
+          <div class="rank">${medal(index)}</div>
+          <div>
+            <div class="name">${escapeHtml(item.name)}</div>
+            <div class="dept">${escapeHtml(item.department || "")}</div>
+          </div>
+          <div class="steps">${Number(item.steps).toLocaleString()}</div>
+        </div>
+      `).join("");
+    }
+
+    function renderTeams(items) {
+      const el = document.getElementById("teamList");
+
+      if (!items.length) {
+        el.innerHTML = `<div class="loading">ยังไม่มีข้อมูล</div>`;
+        return;
+      }
+
+      el.innerHTML = items.map((item, index) => `
+        <div class="team-row">
+          <div class="rank">${index + 1}</div>
+          <div class="name">${escapeHtml(item.team)}</div>
+          <div class="steps">${Number(item.steps).toLocaleString()}</div>
+        </div>
+      `).join("");
+    }
+
+    function medal(index) {
+      return ["🥇", "🥈", "🥉"][index] || (index + 1);
+    }
+
+    function formatFileSize(bytes) {
+      if (bytes < 1024) {
+        return `${bytes} B`;
+      }
+
+      if (bytes < 1024 * 1024) {
+        return `${(bytes / 1024).toFixed(0)} KB`;
+      }
+
+      return `${(bytes / 1024 / 1024).toFixed(2)} MB`;
+    }
+
+    function showMessage(text, type) {
+      formMessage.textContent = text;
+      formMessage.className = `message show ${type}`;
+    }
+
+    function clearMessage() {
+      formMessage.textContent = "";
+      formMessage.className = "message";
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    initOptions();
+    loadDashboard();
+  </script>
+</body>
+</html>
